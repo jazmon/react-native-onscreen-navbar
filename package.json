@@ -1,0 +1,45 @@
+{
+  "name": "react-native-onscreen-navbar",
+  "version": "1.0.0",
+  "description": "Onscreen navbar component for Android",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jazmon/react-native-onscreen-navbar.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-component",
+    "react-native-component",
+    "react",
+    "mobile",
+    "react",
+    "native",
+    "onscreen",
+    "on",
+    "screen",
+    "navbar",
+    "nav",
+    "bar",
+    "android",
+    "color",
+    "translucent"
+  ],
+  "author": "Atte Huhtakangas <atte.huhtakangas@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jazmon/react-native-onscreen-navbar/issues"
+  },
+  "homepage": "https://github.com/Jazmon/react-native-onscreen-navbar#readme",
+  "dependencies": {
+    "react": "15.1.0",
+    "react-native": "0.28.0"
+  }
+}
