@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableNativeFeedback,
+  Dimensions,
   StatusBar,
 } from 'react-native';
 
@@ -13,10 +13,13 @@ import Button from './src/components/Button';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 0,
+    backgroundColor: '#403eb4',
+  },
+  contentWrapper: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#403eb4',
   },
   textContainer: {
     flex: 1,
@@ -79,7 +82,16 @@ class ExampleProject extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View
+        style={[styles.container, {
+          width: Dimensions.get('window').width,
+          paddingBottom: this.state.translucent ? NavigationBar.currentHeight : 0,
+          paddingTop: this.state.translucent ? StatusBar.currentHeight : 0,
+          height: Dimensions.get('window').height + (this.state.translucent
+            ? (StatusBar.currentHeight + NavigationBar.currentHeight)
+            : 0),
+        }]}
+      >
         <StatusBar
           animated={true}
           translucent={this.state.translucent}
@@ -91,18 +103,22 @@ class ExampleProject extends Component {
           backgroundColor={this.state.color}
         />
 
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            Play around with the settings!
-          </Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button onPress={this.changeColor}>
-            <Text style={styles.buttonText}>Change color!</Text>
-          </Button>
-          <Button onPress={this.toggleTranslucent}>
-            <Text style={styles.buttonText}>Set translucent!</Text>
-          </Button>
+        <View style={styles.contentWrapper}>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>
+              Play around with the settings!
+            </Text>
+            <Text>StatusBar height: {StatusBar.currentHeight}</Text>
+            <Text>NavigationBar height: {NavigationBar.currentHeight}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button onPress={this.changeColor}>
+              <Text style={styles.buttonText}>Change color!</Text>
+            </Button>
+            <Button onPress={this.toggleTranslucent}>
+              <Text style={styles.buttonText}>Set translucent!</Text>
+            </Button>
+          </View>
         </View>
       </View>
     );
