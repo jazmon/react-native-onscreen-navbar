@@ -1,7 +1,5 @@
 package com.attehuhtakangas.navigationbar;
 
-import android.app.Activity;
-
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
@@ -14,16 +12,10 @@ import java.util.List;
 
 public class NavigationBarPackage implements ReactPackage {
 
-    private Activity mActivity;
-
-    public NavigationBarPackage(Activity activity) {
-        this.mActivity = activity;
-    }
-
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new NavigationBarModule(reactContext, mActivity));
+        modules.add(new NavigationBarModule(reactContext));
 
         return modules;
     }

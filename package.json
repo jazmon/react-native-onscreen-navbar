@@ -43,7 +43,7 @@
   },
   "rnpm": {
     "android": {
-      "packageInstance": "new NavigationBarPackage(this)"
+      "packageInstance": "new NavigationBarPackage()"
     }
   }
 }
