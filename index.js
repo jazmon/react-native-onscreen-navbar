@@ -1,3 +1,3 @@
-var NativeModules = require('react-native').NativeModules;
+const NavigationBar = require('./components/NavigationBar');
 
-module.exports = NativeModules.NavigationBar;
+module.exports = NavigationBar;

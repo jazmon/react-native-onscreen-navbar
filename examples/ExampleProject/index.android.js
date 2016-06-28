@@ -8,7 +8,8 @@ import {
   StatusBar,
 } from 'react-native';
 
-import NavigationBar from 'react-native-onscreen-navbar/components/NavigationBar';
+import NavigationBar from 'react-native-onscreen-navbar';
+import Button from './src/components/Button';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,39 +18,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#403eb4',
   },
-  welcome: {
+  textContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
     color: '#fff',
   },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  buttonText: {
+    color: '#000',
+  },
 });
-
-function Button({ onPress, children }) {
-  /* eslint-disable new-cap */
-  return (
-    <TouchableNativeFeedback
-      delayPressIn={0}
-      background={TouchableNativeFeedback.Ripple('#000')}
-      onPress={onPress}
-    >
-      <View
-        style={{
-          backgroundColor: '#fff',
-          padding: 6,
-        }}
-      >
-        {children}
-      </View>
-    </TouchableNativeFeedback>
-  );
-  /* eslint-enable new-cap */
-}
-
-Button.propTypes = {
-  onPress: PropTypes.func,
-  children: PropTypes.node.isRequired,
-};
 
 function getRandomInteger(min, max) {
   return Math.floor(Math.random() * max % max) + min;
@@ -75,61 +64,49 @@ class ExampleProject extends Component {
     };
   }
 
-  componentWillMount() {
-    // NavigationBar.setColor(this.state.color);
-  }
-
   changeColor = () => {
-    if (this.state.translucent) {
-      this.setState({
-        translucent: false,
-      });
-      // NavigationBar.setTranslucent(false);
-    }
-
     this.setState({
       color: ExampleProject.colors[getRandomInteger(0, ExampleProject.colors.length)],
+      translucent: false,
     });
-    // NavigationBar.setColor(this.state.color);
   };
 
   toggleTranslucent = () => {
     this.setState({
       translucent: !this.state.translucent,
     });
-    // NavigationBar.setTranslucent(this.state.translucent);
   }
-
 
   render() {
     return (
       <View style={styles.container}>
         <StatusBar
           animated={true}
-          backgroundColor={this.state.color}
+          translucent={this.state.translucent}
+          backgroundColor={this.state.translucent ? 'rgba(0, 0, 0, 0.5)' : this.state.color}
         />
         <NavigationBar
           animated={true}
+          translucent={this.state.translucent}
           backgroundColor={this.state.color}
         />
 
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={styles.welcome}>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>
             Play around with the settings!
           </Text>
         </View>
-        <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
+        <View style={styles.buttonContainer}>
           <Button onPress={this.changeColor}>
-            <Text style={{ color: '#000' }}>Change color!</Text>
+            <Text style={styles.buttonText}>Change color!</Text>
           </Button>
           <Button onPress={this.toggleTranslucent}>
-            <Text style={{ color: '#000' }}>Set translucent!</Text>
+            <Text style={styles.buttonText}>Set translucent!</Text>
           </Button>
         </View>
       </View>
     );
   }
 }
-
 
 AppRegistry.registerComponent('ExampleProject', () => ExampleProject);

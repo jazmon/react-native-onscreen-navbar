@@ -7,27 +7,10 @@ const ReactNative = require('react-native');
 const {
   ColorPropType,
   processColor,
+  NativeModules,
 } = ReactNative;
 
-const NavigationBarManager = require('../');
-
-// /**
-//  * Navigation bar animation
-//  */
-// export type NavigationBarAnimation = $Enum<{
-//   /**
-//    * No animation
-//    */
-//   'none': string,
-//   /**
-//    * Fade animation
-//    */
-//   'fade': string,
-//   /**
-//    * Slide animation
-//    */
-//   'slide': string,
-// }>;
+const NavigationBarManager = NativeModules.NavigationBarManager;
 
 type DefaultProps = {
   animated: boolean;
@@ -47,7 +30,6 @@ function mergePropsStack(propsStack: Array<Object>, defaultValues: Object): Obje
   }, Object.assign({}, defaultValues));
 }
 
-
 /**
  * Returns an object to insert in the props stack from the props
  * and the transition/animation info.
@@ -61,7 +43,7 @@ function createStackEntry(props: any): any {
     translucent: props.translucent,
     // hidden: props.hidden != null ? {
     //   value: props.hidden,
-    //   animated: props.animated,
+    animated: props.animated,
     //   transition: props.showHideTransition,
     // } : null,
   };
@@ -204,9 +186,9 @@ const NavigationBar = React.createClass({
           mergedProps.backgroundColor.animated,
         );
       }
-      if (!oldProps || oldProps.hidden.value !== mergedProps.hidden.value) {
-        NavigationBarManager.setHidden(mergedProps.hidden.value);
-      }
+      // if (!oldProps || oldProps.hidden.value !== mergedProps.hidden.value) {
+      //   NavigationBarManager.setHidden(mergedProps.hidden.value);
+      // }
       if (!oldProps || oldProps.translucent !== mergedProps.translucent) {
         NavigationBarManager.setTranslucent(mergedProps.translucent);
       }
