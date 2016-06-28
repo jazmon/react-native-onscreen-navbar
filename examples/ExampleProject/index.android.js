@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 
-import NavigationBar from '../../NavigationBar';
+import NavigationBar from 'react-native-onscreen-navbar';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 class ExampleProject extends Component {
 
   componentWillMount() {
-    NavigationBar.setColor('#f00');
+    NavigationBar.setColor('#ffffff');
   }
   render() {
     return (
