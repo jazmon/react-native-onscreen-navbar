@@ -28,18 +28,13 @@ public class NavigationBarModule extends ReactContextBaseJavaModule {
 
     private static final String HEIGHT_KEY = "HEIGHT";
 
-    // private static final String DEFAULT_COLOR = "#000000";
-    // private static String mCurrentColor = DEFAULT_COLOR;
-    // private static boolean mTranslucent = false;
-    // private Activity mActivity;
-
     public NavigationBarModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Override
     public String getName() {
-        return "NavigationBar";
+        return "NavigationBarManager";
     }
 
     @Override
@@ -50,14 +45,11 @@ public class NavigationBarModule extends ReactContextBaseJavaModule {
                 PixelUtil.toDIPFromPixel(context.getResources().getDimensionPixelSize(heightResId)) : 0;
 
         final Map<String, Object> constants = new HashMap<>();
-        // constants.put(DEFAULT_COLOR, Color.BLACK);
         constants.put(HEIGHT_KEY, height);
 
         return constants;
     }
 
-    // TODO: create color parser class, currently this only accepts colors in full hex format eg. "#BADA55"
-    // React Native understands rgb, rgba, "#fff", etc.
     @ReactMethod
     public void setColor(final int color, final boolean animated, final Promise res) {
 
@@ -96,20 +88,6 @@ public class NavigationBarModule extends ReactContextBaseJavaModule {
         } else {
             res.resolve(null);
         }
-
-        // final int colorInt = Color.parseColor(color);
-        /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mCurrentColor = color;
-        }
-
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mActivity.getWindow().setNavigationBarColor(colorInt);
-                }
-            }
-        });*/
     }
 
     @ReactMethod
@@ -125,7 +103,6 @@ public class NavigationBarModule extends ReactContextBaseJavaModule {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void run() {
-                    // View.decorView
                     if (translucent) {
                         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
                     } else {

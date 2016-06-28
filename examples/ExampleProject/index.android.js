@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-import NavigationBar from 'react-native-onscreen-navbar';
+import NavigationBar from 'react-native-onscreen-navbar/components/NavigationBar';
 
 const styles = StyleSheet.create({
   container: {
@@ -76,7 +76,7 @@ class ExampleProject extends Component {
   }
 
   componentWillMount() {
-    NavigationBar.setColor(this.state.color);
+    // NavigationBar.setColor(this.state.color);
   }
 
   changeColor = () => {
@@ -84,20 +84,20 @@ class ExampleProject extends Component {
       this.setState({
         translucent: false,
       });
-      NavigationBar.setTranslucent(false);
+      // NavigationBar.setTranslucent(false);
     }
 
     this.setState({
       color: ExampleProject.colors[getRandomInteger(0, ExampleProject.colors.length)],
     });
-    NavigationBar.setColor(this.state.color);
+    // NavigationBar.setColor(this.state.color);
   };
 
   toggleTranslucent = () => {
     this.setState({
       translucent: !this.state.translucent,
     });
-    NavigationBar.setTranslucent(this.state.translucent);
+    // NavigationBar.setTranslucent(this.state.translucent);
   }
 
 
@@ -105,7 +105,11 @@ class ExampleProject extends Component {
     return (
       <View style={styles.container}>
         <StatusBar
-          animated={false}
+          animated={true}
+          backgroundColor={this.state.color}
+        />
+        <NavigationBar
+          animated={true}
           backgroundColor={this.state.color}
         />
 
