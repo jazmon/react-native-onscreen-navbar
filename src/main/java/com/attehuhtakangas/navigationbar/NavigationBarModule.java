@@ -43,40 +43,36 @@ public class NavigationBarModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setColor(String color) {
         final int colorInt = Color.parseColor(color);
-
-        if (getReactApplicationContext().hasCurrentActivity()) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mCurrentColor = color;
-            }
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        mActivity.getWindow().setNavigationBarColor(colorInt);
-                    }
-                }
-            });
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCurrentColor = color;
         }
+
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mActivity.getWindow().setNavigationBarColor(colorInt);
+                }
+            }
+        });
     }
 
     @ReactMethod
     public void setTranslucent(final boolean val) {
-        if (getReactApplicationContext().hasCurrentActivity()) {
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        if (!isTranslucent() && val) {
-                            mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                            mTranslucent = true;
-                        } else if (isTranslucent() && !val) {
-                            mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                            mTranslucent = false;
-                        }
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    if (val) {
+                        mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                        mTranslucent = true;
+                    } else {
+                        mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                        mTranslucent = false;
                     }
                 }
-            });
-        }
+            }
+        });
     }
 
     @ReactMethod
