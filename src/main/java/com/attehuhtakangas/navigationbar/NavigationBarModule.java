@@ -3,14 +3,11 @@ package com.attehuhtakangas.navigationbar;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
-import android.view.Window;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.WindowManager;
 
-import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
@@ -20,13 +17,13 @@ import java.util.Map;
 public class NavigationBarModule extends ReactContextBaseJavaModule {
 
     private static final String DEFAULT_COLOR = "#000000";
-    private static String mCurrentColor;
+    private static String mCurrentColor = DEFAULT_COLOR;
+    private static boolean mTranslucent = false;
     private Activity mActivity;
 
     public NavigationBarModule(ReactApplicationContext reactContext, Activity activity) {
         super(reactContext);
         this.mActivity = activity;
-        this.mCurrentColor = DEFAULT_COLOR;
     }
 
     @Override
@@ -41,11 +38,16 @@ public class NavigationBarModule extends ReactContextBaseJavaModule {
         return constants;
     }
 
+    // TODO: create color parser class, currently this only accepts colors in full hex format eg. "#BADA55"
+    // React Native understands rgb, rgba, "#fff", etc.
     @ReactMethod
     public void setColor(String color) {
-        this.setTranslucent(false);
         final int colorInt = Color.parseColor(color);
+
         if (getReactApplicationContext().hasCurrentActivity()) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mCurrentColor = color;
+            }
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -64,10 +66,12 @@ public class NavigationBarModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        if(val) {
+                        if (!isTranslucent() && val) {
                             mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                        } else {
+                            mTranslucent = true;
+                        } else if (isTranslucent() && !val) {
                             mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                            mTranslucent = false;
                         }
                     }
                 }
@@ -103,7 +107,12 @@ public class NavigationBarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public String getCurrentColor() {
-      return this.mCurrentColor;
+        return this.mCurrentColor;
+    }
+
+    @ReactMethod
+    public boolean isTranslucent() {
+        return this.mTranslucent;
     }
 
     @ReactMethod
