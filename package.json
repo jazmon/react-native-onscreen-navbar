@@ -1,13 +1,12 @@
 {
   "name": "react-native-onscreen-navbar",
   "version": "1.0.0",
-  "description": "Onscreen navbar component for Android",
+  "description": "Onscreen navigation bar customization component for Android",
   "main": "index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "repository": {
@@ -41,5 +40,10 @@
   "dependencies": {
     "react": "15.1.0",
     "react-native": "0.28.0"
+  },
+  "rnpm": {
+    "android": {
+      "packageInstance": "new NavigationBarPackage(this)"
+    }
   }
 }
