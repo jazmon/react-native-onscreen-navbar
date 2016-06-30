@@ -37,10 +37,11 @@
     "url": "https://github.com/Jazmon/react-native-onscreen-navbar/issues"
   },
   "homepage": "https://github.com/Jazmon/react-native-onscreen-navbar#readme",
-  "dependencies": {
+  "peerDependencies": {
     "react": "15.1.0",
-    "react-native": "0.28.0"
+    "react-native": ">=0.28.0"
   },
+  "nativePackage": true,
   "rnpm": {
     "android": {
       "packageInstance": "new NavigationBarPackage()"
