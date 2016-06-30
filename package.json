@@ -39,7 +39,7 @@
   "homepage": "https://github.com/Jazmon/react-native-onscreen-navbar#readme",
   "peerDependencies": {
     "react": "15.1.0",
-    "react-native": ">=0.28.0"
+    "react-native": ">=0.27.0"
   },
   "nativePackage": true,
   "rnpm": {
