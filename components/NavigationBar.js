@@ -15,13 +15,14 @@ const NavigationBarManager = NativeModules.NavigationBarManager;
  */
 function mergePropsStack(
   propsStack: Array<StackEntry>, defaultValues: StackEntry
-  ): ?StackEntry {
+// $FlowIssue
+): StackEntry {
   propsStack.reduce((prev, cur) =>
     ({ ...prev, ...cur }), { ...defaultValues });
 }
 
 type StackEntry = {
-  backgroundColor: ?{
+  backgroundColor: {
     value: string;
     animated: boolean;
   };
@@ -34,10 +35,10 @@ type StackEntry = {
  * and the transition/animation info.
  */
 const createStackEntry = (props: Props): StackEntry => ({
-  backgroundColor: props.backgroundColor != null ? {
+  backgroundColor: {
     value: props.backgroundColor,
     animated: props.animated,
-  } : null,
+  },
   translucent: props.translucent,
   animated: props.animated,
 });
@@ -150,8 +151,9 @@ class NavigationBar extends React.Component {
   updatePropsStack = () => {
     clearImmediate(NavigationBar.updateImmediate);
     NavigationBar.updateImmediate = setImmediate(() => {
-      const oldProps = NavigationBar.currentValues;
-      const mergedProps = mergePropsStack(NavigationBar.propsStack, NavigationBar.defaultProps);
+      const oldProps: ?StackEntry = NavigationBar.currentValues;
+      const mergedProps: StackEntry =
+        mergePropsStack(NavigationBar.propsStack, NavigationBar.defaultProps);
 
       if (!oldProps || oldProps.backgroundColor.value !== mergedProps.backgroundColor.value) {
         NavigationBarManager.setColor(
