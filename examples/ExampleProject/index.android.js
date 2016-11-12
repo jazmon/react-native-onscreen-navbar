@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -6,123 +7,199 @@ import {
   View,
   Dimensions,
   StatusBar,
+  Button,
 } from 'react-native';
 
 import NavigationBar from 'react-native-onscreen-navbar';
-import Button from './src/components/Button';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 0,
-    backgroundColor: '#403eb4',
-  },
-  contentWrapper: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: '#fff',
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  buttonText: {
-    color: '#000',
-  },
-});
+const colors: Array<string> = [
+  '#f44336',
+  '#E91E63',
+  '#9C27B0',
+  '#673AB7',
+  '#3F51B5',
+  '#2196F3',
+  '#03A9F4',
+  '#00BCD4',
+  '#009688',
+  '#4CAF50',
+  '#8BC34A',
+  '#CDDC39',
+  '#FFEB3B',
+  '#FFC107',
+  '#FF9800',
+  '#FF5722',
+  '#795548',
+  '#9E9E9E',
+  '#607D8B',
+];
 
-function getRandomInteger(min, max) {
-  return Math.floor(Math.random() * max % max) + min;
+function getColor(array: Array<string>, currentIndex: number = 0) {
+  let index: number = currentIndex;
+  index = index >= array.length - 1 ? 0 : index += 1;
+  return index;
 }
 
+type State = {
+  color: number;
+  translucent: boolean;
+  animating: boolean;
+};
+
 class ExampleProject extends Component {
-  static colors = [
-    '#ff0000',
-    '#00ff00',
-    '#0000ff',
-    '#ffff00',
-    '#ff00ff',
-    '#00ffff',
-    '#000000',
-  ];
+  interval: ?number;
 
   constructor() {
     super();
 
     this.state = {
-      color: ExampleProject.colors[getRandomInteger(0, ExampleProject.colors.length)],
+      color: getColor(colors),
       translucent: false,
+      animating: false,
     };
+
+    this.interval = null;
   }
 
-  changeColor = () => {
+  state: State;
+
+  componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
+  changeColor = (): void => {
+    const color: number = getColor(colors, this.state.color);
     this.setState({
-      color: ExampleProject.colors[getRandomInteger(0, ExampleProject.colors.length)],
+      color,
       translucent: false,
     });
   };
 
-  toggleTranslucent = () => {
+  toggleTranslucent = (): void => {
     this.setState({
       translucent: !this.state.translucent,
     });
   }
 
+  toggleAnimating = (): void => {
+    const animate: boolean = !this.state.animating;
+
+    if (!animate && this.interval) {
+      clearInterval(this.interval);
+    } else {
+      this.interval = setInterval(() => {
+        this.setState({
+          color: getColor(colors, this.state.color),
+        });
+      }, 300);
+    }
+
+    this.setState({
+      animating: animate,
+    });
+  }
+
   render() {
+    const { width, height } = Dimensions.get('window');
+    const { translucent, color, animating } = this.state;
+    const backgroundColor: string = colors[color];
     return (
       <View
         style={[styles.container, {
-          width: Dimensions.get('window').width,
+          width,
           paddingBottom: this.state.translucent ? NavigationBar.currentHeight : 0,
           paddingTop: this.state.translucent ? StatusBar.currentHeight : 0,
-          height: Dimensions.get('window').height + (this.state.translucent
+          height: height + (this.state.translucent
             ? (StatusBar.currentHeight + NavigationBar.currentHeight)
             : 0),
         }]}
       >
         <StatusBar
           animated={true}
-          translucent={this.state.translucent}
-          backgroundColor={this.state.translucent ? 'rgba(0, 0, 0, 0.5)' : this.state.color}
+          translucent={translucent}
+          backgroundColor={translucent ? 'rgba(0, 0, 0, 0.5)' : backgroundColor}
         />
         <NavigationBar
           animated={true}
-          translucent={this.state.translucent}
-          backgroundColor={this.state.color}
+          translucent={translucent}
+          backgroundColor={backgroundColor}
         />
-
-        <View style={styles.contentWrapper}>
+        <View style={styles.content}>
           <View style={styles.textContainer}>
             <Text style={styles.text}>
-              Play around with the settings!
+              Example Project for{'\n'}
+              <Text style={styles.emphasis}>react-native-onscreen-navbar</Text>
+              {'\n'}Play around with the settings!
             </Text>
-            <Text>StatusBar height: {StatusBar.currentHeight}</Text>
-            <Text>NavigationBar height: {NavigationBar.currentHeight}</Text>
+            <Text style={styles.secondaryText}>
+              StatusBar height: {StatusBar.currentHeight}
+            </Text>
+            <Text style={styles.secondaryText}>
+              NavigationBar height: {NavigationBar.currentHeight}
+            </Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Button onPress={this.changeColor}>
-              <Text style={styles.buttonText}>Change color!</Text>
-            </Button>
-            <Button onPress={this.toggleTranslucent}>
-              <Text style={styles.buttonText}>Set translucent!</Text>
-            </Button>
+            <Button
+              title="Change color!"
+              onPress={this.changeColor}
+            />
+            <Button
+              title={animating ? 'Stop animating' : 'Start animating'}
+              onPress={this.toggleAnimating}
+            />
+            <Button
+              title="Set translucent!"
+              onPress={this.toggleTranslucent}
+            />
           </View>
         </View>
       </View>
     );
   }
 }
+
+type Styles = {[key: string]: Object};
+
+const styles: Styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  content: {
+    flex: 1,
+  },
+  textContainer: {
+    flex: 1,
+    marginVertical: 24,
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 20,
+    textAlign: 'center',
+    fontFamily: 'sans-serif-light',
+    marginVertical: 10,
+    color: 'rgba(0, 0, 0, 0.87)',
+  },
+  emphasis: {
+    fontWeight: 'normal',
+    fontFamily: 'sans-serif-mono',
+    backgroundColor: 'rgba(121, 121, 121, 0.10)',
+    lineHeight: 28,
+  },
+  secondaryText: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
+  buttonContainer: {
+    flex: 0.5,
+    marginVertical: 24,
+    marginBottom: 64,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+});
 
 AppRegistry.registerComponent('ExampleProject', () => ExampleProject);
