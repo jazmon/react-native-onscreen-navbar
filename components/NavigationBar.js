@@ -5,7 +5,6 @@ import {
   ColorPropType,
   processColor,
   NativeModules,
-  // $FlowIssue
 } from 'react-native';
 
 const NavigationBarManager = NativeModules.NavigationBarManager;
@@ -15,9 +14,8 @@ const NavigationBarManager = NativeModules.NavigationBarManager;
  */
 function mergePropsStack(
   propsStack: Array<StackEntry>, defaultValues: StackEntry
-// $FlowIssue
 ): StackEntry {
-  propsStack.reduce((prev, cur) =>
+  return propsStack.reduce((prev, cur) =>
     ({ ...prev, ...cur }), { ...defaultValues });
 }
 
