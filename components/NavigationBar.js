@@ -1,205 +1,174 @@
 // @flow
-
-'use strict';
-
-const React = require('react');
-const ReactNative = require('react-native');
-const {
+// Implementation borrows heavily from https://github.com/facebook/react-native/blob/master/Libraries/Components/StatusBar/StatusBar.js
+import React from 'react';
+import {
   ColorPropType,
   processColor,
   NativeModules,
-} = ReactNative;
+  // $FlowIssue
+} from 'react-native';
 
 const NavigationBarManager = NativeModules.NavigationBarManager;
-
-type DefaultProps = {
-  animated: boolean;
-};
 
 /**
  * Merges the prop stack with the default values.
  */
-function mergePropsStack(propsStack: Array<Object>, defaultValues: Object): Object {
-  return propsStack.reduce((prev, cur) => {
-    for (let prop in cur) {
-      if (cur[prop] != null) {
-        prev[prop] = cur[prop];
-      }
-    }
-    return prev;
-  }, Object.assign({}, defaultValues));
+function mergePropsStack(
+  propsStack: Array<StackEntry>, defaultValues: StackEntry
+  ): ?StackEntry {
+  propsStack.reduce((prev, cur) =>
+    ({ ...prev, ...cur }), { ...defaultValues });
 }
+
+type StackEntry = {
+  backgroundColor: ?{
+    value: string;
+    animated: boolean;
+  };
+  translucent: boolean;
+  animated: boolean;
+};
 
 /**
  * Returns an object to insert in the props stack from the props
  * and the transition/animation info.
  */
-function createStackEntry(props: any): any {
-  return {
-    backgroundColor: props.backgroundColor != null ? {
-      value: props.backgroundColor,
-      animated: props.animated,
-    } : null,
-    translucent: props.translucent,
-    // hidden: props.hidden != null ? {
-    //   value: props.hidden,
+const createStackEntry = (props: Props): StackEntry => ({
+  backgroundColor: props.backgroundColor != null ? {
+    value: props.backgroundColor,
     animated: props.animated,
-    //   transition: props.showHideTransition,
-    // } : null,
-  };
-}
+  } : null,
+  translucent: props.translucent,
+  animated: props.animated,
+});
 
-const NavigationBar = React.createClass({
-  statics: {
-    _propsStack: [],
-    _defaultProps: createStackEntry({
-      animated: false,
-      showHideTransition: 'fade',
-      backgroundColor: 'black',
-      translucent: false,
-      // hidden: false,
-    }),
-    // Timer for updating the native module values at the end of the frame.
-    _updateImmediate: null,
-    // The current merged values from the props stack.
-    _currentValues: null,
+/* eslint-disable react/no-unused-prop-types */
+type Props = {
+  animated: boolean;
+  backgroundColor: string;
+  translucent: boolean;
+};
+/* eslint-enable react/no-unused-prop-types */
 
+
+type DefaultPropsType = {
+  animated: boolean;
+  translucent: boolean;
+  backgroundColor: string;
+};
+
+class NavigationBar extends React.Component {
+  static PropTypes = {
     /**
-     * The current height of the status bar on the device.
-     *
-     * @platform android
-     */
-    currentHeight: NavigationBarManager.HEIGHT,
-
-    // /**
-    //  * Show or hide the status bar
-    //  * @param hidden The dialog's title.
-    //  * @param animation Optional animation when
-    //  *    changing the status bar hidden property.
-    //  */
-    // setHidden(hidden: boolean, animation?: NavigationBarAnimation) {
-    //   animation = animation || 'none';
-    //   NavigationBar._defaultProps.hidden.value = hidden;
-    //   if (Platform.OS === 'ios') {
-    //     NavigationBarManager.setHidden(hidden, animation);
-    //   } else if (Platform.OS === 'android') {
-    //     NavigationBarManager.setHidden(hidden);
-    //   }
-    // },
-
-    /**
-     * Set the background color for the status bar
-     * @param color Background color.
-     * @param animated Animate the style change.
-     */
-    setBackgroundColor(color: string, animated?: boolean) {
-      animated = animated || false;
-      NavigationBar._defaultProps.backgroundColor.value = color;
-      NavigationBarManager.setColor(processColor(color), animated);
-    },
-
-    /**
-     * Control the translucency of the status bar
-     * @param translucent Set as translucent.
-     */
-    setTranslucent(translucent: boolean) {
-      NavigationBar._defaultProps.translucent = translucent;
-      NavigationBarManager.setTranslucent(translucent);
-    },
-  },
-
-  propTypes: {
-    // /**
-    //  * If the status bar is hidden.
-    //  */
-    // hidden: React.PropTypes.bool,
-    /**
-     * If the transition between status bar property changes should be animated.
-     * Supported for backgroundColor, barStyle and hidden.
+     * If the transition between navigation bar property changes should be animated.
+     * Supported for backgroundColor.
      */
     animated: React.PropTypes.bool,
     /**
-     * The background color of the status bar.
-     * @platform android
+     * The background color of the navigation bar.
      */
     backgroundColor: ColorPropType,
     /**
-     * If the status bar is translucent.
-     * When translucent is set to true, the app will draw under the status bar.
-     * This is useful when using a semi transparent status bar color.
-     *
-     * @platform android
+     * If the navigation bar is translucent.
+     * When translucent is set to true, the app will draw under the navigation bar.
+     * This is useful when using a semi transparent navigation bar color.
      */
     translucent: React.PropTypes.bool,
-  },
+  };
 
-  getDefaultProps(): DefaultProps {
-    return {
-      animated: false,
-      showHideTransition: 'fade',
-    };
-  },
+  static DefaultProps: DefaultPropsType = {
+    animated: false,
+    translucent: false,
+    backgroundColor: '#000000',
+  }
 
-  _stackEntry: null,
-
-  componentDidMount() {
-    // Every time a NavigationBar component is mounted, we push it's prop to a stack
-    // and always update the native status bar with the props from the top of then
-    // stack. This allows having multiple NavigationBar components and the one that is
-    // added last or is deeper in the view hierachy will have priority.
-    this._stackEntry = createStackEntry(this.props);
-    NavigationBar._propsStack.push(this._stackEntry);
-    this._updatePropsStack();
-  },
-
-  componentWillUnmount() {
-    // When a NavigationBar is unmounted, remove itself from the stack and update
-    // the native bar with the next props.
-    const index = NavigationBar._propsStack.indexOf(this._stackEntry);
-    NavigationBar._propsStack.splice(index, 1);
-
-    this._updatePropsStack();
-  },
-
-  componentDidUpdate() {
-    const index = NavigationBar._propsStack.indexOf(this._stackEntry);
-    this._stackEntry = createStackEntry(this.props);
-    NavigationBar._propsStack[index] = this._stackEntry;
-
-    this._updatePropsStack();
-  },
+  static propsStack: Array<StackEntry> = [];
+  static updateImmediate: ?Object = null;
+  static currentValues: ?StackEntry = null;
 
   /**
-   * Updates the native status bar with the props from the stack.
+   * The current height of the status bar on the device.
+   *
    */
-  _updatePropsStack() {
-    // Send the update to the native module only once at the end of the frame.
-    clearImmediate(NavigationBar._updateImmediate);
-    NavigationBar._updateImmediate = setImmediate(() => {
-      const oldProps = NavigationBar._currentValues;
-      const mergedProps = mergePropsStack(NavigationBar._propsStack, NavigationBar._defaultProps);
+  static currentHeight: number = NavigationBarManager.HEIGHT;
 
-      // Update the props that have changed using the merged values from the props stack.
+  /**
+   * Set the background color for the status bar
+   * @param color Background color.
+   * @param animated Animate the style change.
+   */
+  static setBackgroundColor(color: string, animated?: boolean = false) {
+    if (NavigationBar.defaultProps.backgroundColor) {
+      NavigationBar.defaultProps.backgroundColor.value = color;
+      NavigationBar.defaultProps.backgroundColor.animated = animated;
+    }
+    NavigationBarManager.setColor(processColor(color), animated);
+  }
+
+  /**
+   * Control the translucency of the status bar
+   * @param translucent Set as translucent.
+   */
+  static setTranslucent(translucent: boolean) {
+    NavigationBar.defaultProps.translucent = translucent;
+    NavigationBarManager.setTranslucent(translucent);
+  }
+
+  stackEntry: StackEntry;
+  props: Props;
+
+  static defaultProps: StackEntry = createStackEntry({
+    animated: false,
+    backgroundColor: '#000000',
+    translucent: false,
+  });
+
+  componentDidMount() {
+    // add this instance's props to the stack
+    this.stackEntry = createStackEntry(this.props);
+    NavigationBar.propsStack.push(this.stackEntry);
+    this.updatePropsStack();
+  }
+
+  componentDidUpdate() {
+    // modify this instance's props in the stack
+    const index: number = NavigationBar.propsStack.indexOf(this.stackEntry);
+    this.stackEntry = createStackEntry(this.props);
+    NavigationBar.propsStack[index] = this.stackEntry;
+
+    this.updatePropsStack();
+  }
+
+  componentWillUnmount() {
+    // remove this instance's props from the stack
+    const index: number = NavigationBar.propsStack.indexOf(this.stackEntry);
+    NavigationBar.propsStack.splice(index, 1);
+
+    this.updatePropsStack();
+  }
+
+  updatePropsStack = () => {
+    clearImmediate(NavigationBar.updateImmediate);
+    NavigationBar.updateImmediate = setImmediate(() => {
+      const oldProps = NavigationBar.currentValues;
+      const mergedProps = mergePropsStack(NavigationBar.propsStack, NavigationBar.defaultProps);
+
       if (!oldProps || oldProps.backgroundColor.value !== mergedProps.backgroundColor.value) {
         NavigationBarManager.setColor(
           processColor(mergedProps.backgroundColor.value),
           mergedProps.backgroundColor.animated,
         );
       }
-      // if (!oldProps || oldProps.hidden.value !== mergedProps.hidden.value) {
-      //   NavigationBarManager.setHidden(mergedProps.hidden.value);
-      // }
       if (!oldProps || oldProps.translucent !== mergedProps.translucent) {
         NavigationBarManager.setTranslucent(mergedProps.translucent);
       }
-      // Update the current prop values.
-      NavigationBar._currentValues = mergedProps;
+      NavigationBar.currentValues = mergedProps;
     });
-  },
+  }
 
-  render(): ?ReactElement<any> {
+  render() {
     return null;
-  },
-});
+  }
+}
 
-module.exports = NavigationBar;
+export default NavigationBar;

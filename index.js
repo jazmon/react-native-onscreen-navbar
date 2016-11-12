@@ -1,3 +1,3 @@
-const NavigationBar = require('./components/NavigationBar');
+import NavigationBar from './components/NavigationBar';
 
-module.exports = NavigationBar;
+export default NavigationBar;
