@@ -7,86 +7,111 @@ import {
   View,
   Dimensions,
   StatusBar,
+  Button,
 } from 'react-native';
 
 import NavigationBar from 'react-native-onscreen-navbar';
-import Button from './src/components/Button';
 
-function getRandomInteger(min, max) {
-  return Math.floor((Math.random() * max) % max) + min;
-}
+const colors = [
+  '#f44336',
+  '#E91E63',
+  '#9C27B0',
+  '#673AB7',
+  '#3F51B5',
+  '#2196F3',
+  '#03A9F4',
+  '#00BCD4',
+  '#009688',
+  '#4CAF50',
+  '#8BC34A',
+  '#CDDC39',
+  '#FFEB3B',
+  '#FFC107',
+  '#FF9800',
+  '#FF5722',
+  '#795548',
+  '#9E9E9E',
+  '#607D8B',
+];
+
+type State = {
+  color: number;
+  translucent: boolean;
+};
 
 class ExampleProject extends Component {
-  static colors = [
-    '#ff0000',
-    '#00ff00',
-    '#0000ff',
-    '#ffff00',
-    '#ff00ff',
-    '#00ffff',
-    '#000000',
-  ];
-
   constructor() {
     super();
 
     this.state = {
-      color: ExampleProject.colors[getRandomInteger(0, ExampleProject.colors.length)],
+      color: 0,
       translucent: false,
     };
   }
 
-  changeColor = () => {
+  state: State;
+
+  changeColor = (): void => {
+    let currentColor: number = this.state.color;
+    const color: number = this.state.color >= colors.length ? 0 : currentColor += 1;
     this.setState({
-      color: ExampleProject.colors[getRandomInteger(0, ExampleProject.colors.length)],
+      color,
       translucent: false,
     });
   };
 
-  toggleTranslucent = () => {
+  toggleTranslucent = (): void => {
     this.setState({
       translucent: !this.state.translucent,
     });
   }
 
   render() {
+    const { width, height } = Dimensions.get('window');
+    const { translucent, color } = this.state;
+    const backgroundColor: string = colors[color];
     return (
       <View
         style={[styles.container, {
-          width: Dimensions.get('window').width,
+          width,
           paddingBottom: this.state.translucent ? NavigationBar.currentHeight : 0,
           paddingTop: this.state.translucent ? StatusBar.currentHeight : 0,
-          height: Dimensions.get('window').height + (this.state.translucent
+          height: height + (this.state.translucent
             ? (StatusBar.currentHeight + NavigationBar.currentHeight)
             : 0),
         }]}
       >
         <StatusBar
           animated={true}
-          translucent={this.state.translucent}
-          backgroundColor={this.state.translucent ? 'rgba(0, 0, 0, 0.5)' : this.state.color}
+          translucent={translucent}
+          backgroundColor={translucent ? 'rgba(0, 0, 0, 0.5)' : backgroundColor}
         />
         <NavigationBar
           animated={true}
-          translucent={this.state.translucent}
-          backgroundColor={this.state.color}
+          translucent={translucent}
+          backgroundColor={backgroundColor}
         />
-
-        <View style={styles.contentWrapper}>
+        <View style={styles.content}>
           <View style={styles.textContainer}>
             <Text style={styles.text}>
               Play around with the settings!
             </Text>
-            <Text>StatusBar height: {StatusBar.currentHeight}</Text>
-            <Text>NavigationBar height: {NavigationBar.currentHeight}</Text>
+            <Text style={styles.secondaryText}>
+              StatusBar height: {StatusBar.currentHeight}
+            </Text>
+            <Text style={styles.secondaryText}>
+              NavigationBar height: {NavigationBar.currentHeight}
+            </Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Button onPress={this.changeColor}>
-              <Text style={styles.buttonText}>Change color!</Text>
-            </Button>
-            <Button onPress={this.toggleTranslucent}>
-              <Text style={styles.buttonText}>Set translucent!</Text>
-            </Button>
+            <Button
+              title="Change color!"
+              onPress={this.changeColor}
+            />
+            <Button
+              title="Set translucent!"
+              onPress={this.toggleTranslucent}
+            />
           </View>
         </View>
       </View>
@@ -94,36 +119,37 @@ class ExampleProject extends Component {
   }
 }
 
+type Styles = {[key: string]: Object};
 
-const styles = StyleSheet.create({
+const styles: Styles = StyleSheet.create({
   container: {
-    flex: 0,
-    backgroundColor: '#403eb4',
-  },
-  contentWrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  content: {
+    flex: 1,
   },
   textContainer: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
-    color: '#fff',
+    fontFamily: 'sans-serif-light',
+    marginVertical: 10,
+    color: 'rgba(0, 0, 0, 0.87)',
+  },
+  secondaryText: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: 'rgba(0, 0, 0, 0.54)',
   },
   buttonContainer: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-  },
-  buttonText: {
-    color: '#000',
   },
 });
 
