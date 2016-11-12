@@ -4,27 +4,29 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "postinstall": "rnpm link"
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.js src",
+    "lint:fix": "./node_modules/.bin/eslint -c .eslintrc.js src --fix",
+    "flow": "./node_modules/.bin/flow"
   },
   "dependencies": {
-    "react": "15.1.0",
-    "react-native": "0.28.0",
-    "react-native-onscreen-navbar": "../../",
-    "rnpm": "^1.9.0"
+    "react": "15.3.1",
+    "react-native": "0.37.0",
+    "react-native-onscreen-navbar": "file:../../"
   },
   "devDependencies": {
-    "babel-cli": "^6.10.1",
-    "babel-core": "^6.10.4",
-    "babel-eslint": "^6.1.0",
-    "babel-polyfill": "^6.9.1",
-    "babel-preset-react-native": "^1.9.0",
-    "babel-preset-stage-0": "^6.5.0",
-    "eslint": "^2.13.1",
-    "eslint-config-airbnb": "^9.0.1",
+    "eslint": "^3.10.0",
+    "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-babel": "^3.3.0",
-    "eslint-plugin-import": "^1.9.2",
-    "eslint-plugin-jsx-a11y": "^1.5.3",
-    "eslint-plugin-react": "^5.2.2",
-    "eslint-plugin-react-native": "^1.1.0"
-  }
+    "eslint-plugin-flowtype": "^2.25.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.6.0",
+    "eslint-plugin-react-native": "^2.0.0",
+    "eslint-plugin-sort-class-members": "^1.1.1",
+    "flow-bin": "^0.35.0"
+  },
+  "description": "an example project",
+  "main": "index.android.js",
+  "author": "Atte Huhtakangas <atte.huhtakangas@gmail.com>",
+  "license": "ISC"
 }

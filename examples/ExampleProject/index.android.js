@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -11,40 +12,8 @@ import {
 import NavigationBar from 'react-native-onscreen-navbar';
 import Button from './src/components/Button';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 0,
-    backgroundColor: '#403eb4',
-  },
-  contentWrapper: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: '#fff',
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  buttonText: {
-    color: '#000',
-  },
-});
-
 function getRandomInteger(min, max) {
-  return Math.floor(Math.random() * max % max) + min;
+  return Math.floor((Math.random() * max) % max) + min;
 }
 
 class ExampleProject extends Component {
@@ -124,5 +93,38 @@ class ExampleProject extends Component {
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 0,
+    backgroundColor: '#403eb4',
+  },
+  contentWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+    color: '#fff',
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  buttonText: {
+    color: '#000',
+  },
+});
 
 AppRegistry.registerComponent('ExampleProject', () => ExampleProject);
