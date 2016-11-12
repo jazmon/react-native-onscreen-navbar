@@ -12,7 +12,7 @@ import {
 
 import NavigationBar from 'react-native-onscreen-navbar';
 
-const colors = [
+const colors: Array<string> = [
   '#f44336',
   '#E91E63',
   '#9C27B0',
@@ -34,26 +34,43 @@ const colors = [
   '#607D8B',
 ];
 
+function getColor(array: Array<string>, currentIndex: number = 0) {
+  let index: number = currentIndex;
+  index = index >= array.length - 1 ? 0 : index += 1;
+  return index;
+}
+
 type State = {
   color: number;
   translucent: boolean;
+  animating: boolean;
 };
 
 class ExampleProject extends Component {
+  interval: ?number;
+
   constructor() {
     super();
 
     this.state = {
-      color: 0,
+      color: getColor(colors),
       translucent: false,
+      animating: false,
     };
+
+    this.interval = null;
   }
 
   state: State;
 
+  componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
   changeColor = (): void => {
-    let currentColor: number = this.state.color;
-    const color: number = this.state.color >= colors.length ? 0 : currentColor += 1;
+    const color: number = getColor(colors, this.state.color);
     this.setState({
       color,
       translucent: false,
@@ -66,9 +83,27 @@ class ExampleProject extends Component {
     });
   }
 
+  toggleAnimating = (): void => {
+    const animate: boolean = !this.state.animating;
+
+    if (!animate && this.interval) {
+      clearInterval(this.interval);
+    } else {
+      this.interval = setInterval(() => {
+        this.setState({
+          color: getColor(colors, this.state.color),
+        });
+      }, 300);
+    }
+
+    this.setState({
+      animating: animate,
+    });
+  }
+
   render() {
     const { width, height } = Dimensions.get('window');
-    const { translucent, color } = this.state;
+    const { translucent, color, animating } = this.state;
     const backgroundColor: string = colors[color];
     return (
       <View
@@ -94,7 +129,9 @@ class ExampleProject extends Component {
         <View style={styles.content}>
           <View style={styles.textContainer}>
             <Text style={styles.text}>
-              Play around with the settings!
+              Example Project for{'\n'}
+              <Text style={styles.emphasis}>react-native-onscreen-navbar</Text>
+              {'\n'}Play around with the settings!
             </Text>
             <Text style={styles.secondaryText}>
               StatusBar height: {StatusBar.currentHeight}
@@ -107,6 +144,10 @@ class ExampleProject extends Component {
             <Button
               title="Change color!"
               onPress={this.changeColor}
+            />
+            <Button
+              title={animating ? 'Stop animating' : 'Start animating'}
+              onPress={this.toggleAnimating}
             />
             <Button
               title="Set translucent!"
@@ -131,6 +172,7 @@ const styles: Styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    marginVertical: 24,
     justifyContent: 'center',
   },
   text: {
@@ -140,14 +182,21 @@ const styles: Styles = StyleSheet.create({
     marginVertical: 10,
     color: 'rgba(0, 0, 0, 0.87)',
   },
+  emphasis: {
+    fontWeight: 'normal',
+    fontFamily: 'sans-serif-mono',
+    backgroundColor: 'rgba(121, 121, 121, 0.10)',
+    lineHeight: 28,
+  },
   secondaryText: {
     fontSize: 14,
     textAlign: 'center',
     color: 'rgba(0, 0, 0, 0.54)',
   },
   buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
+    flex: 0.5,
+    marginVertical: 24,
+    marginBottom: 64,
     alignItems: 'center',
     justifyContent: 'space-around',
   },
