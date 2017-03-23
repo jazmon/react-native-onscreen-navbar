@@ -57,7 +57,7 @@ type DefaultPropsType = {
 };
 
 class NavigationBar extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     /**
      * If the transition between navigation bar property changes should be animated.
      * Supported for backgroundColor.
@@ -75,7 +75,7 @@ class NavigationBar extends React.Component {
     translucent: React.PropTypes.bool,
   };
 
-  static DefaultProps: DefaultPropsType = {
+  static defaultProps: DefaultPropsType = {
     animated: false,
     translucent: false,
     backgroundColor: '#000000',
