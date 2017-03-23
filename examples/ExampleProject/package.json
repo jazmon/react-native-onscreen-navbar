@@ -9,9 +9,9 @@
     "flow": "./node_modules/.bin/flow"
   },
   "dependencies": {
-    "react": "15.3.1",
-    "react-native": "0.37.0",
-    "react-native-onscreen-navbar": "file:../../"
+    "react": "~15.4.1",
+    "react-native": "^0.42.3",
+    "react-native-onscreen-navbar": "*"
   },
   "devDependencies": {
     "eslint": "^3.10.0",
