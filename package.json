@@ -2,14 +2,22 @@
   "name": "react-native-onscreen-navbar",
   "version": "1.2.0",
   "description": "Onscreen navigation bar customization component for Android",
-  "main": "index.js",
+  "main": "lib/index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "lint": "eslint -c .eslintrc.js src",
-    "lint:fix": "eslint -c .eslintrc.js src --fix",
+    "lint": "eslint lib",
+    "precommit": "lint-staged",
+    "lint:fix": "eslint lib --fix",
     "flow": "flow"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
   },
   "repository": {
     "url": "git+https://github.com/Jazmon/react-native-onscreen-navbar.git",
@@ -52,15 +60,20 @@
     "react-native": ">=0.47.2"
   },
   "devDependencies": {
-    "eslint": "^3.10.0",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-plugin-babel": "^3.3.0",
+    "eslint": "^3.19.0 || ^4.3.0",
+    "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-flowtype": "^2.25.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.6.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-react-native": "^2.0.0",
     "eslint-plugin-sort-class-members": "^1.1.1",
-    "flow-bin": "^0.35.0"
+    "flow-bin": "^0.49.1"
+  },
+  "dependencies": {
+    "eslint-config-prettier": "^2.4.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.1.0",
+    "prettier": "^1.6.1"
   }
 }

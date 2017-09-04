@@ -2,15 +2,12 @@
 
 # We fork some components by platform.
 .*/*.web.js
-.*/*.android.js
+; .*/*.android.js
 
 # Some modules have their own node_modules with overlap
 .*/node_modules/node-haste/.*
 
 # Ugh
-.*/node_modules/babel.*
-.*/node_modules/babylon.*
-.*/node_modules/invariant.*
 
 # Ignore react and fbjs where there are overlaps, but don't ignore
 # anything that react-native relies on
@@ -97,4 +94,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowFixedInNextDeploy
 suppress_comment=\\(.\\|\n\\)*\\$FlowIssue
 
 [version]
-^0.33.0
+^0.49.1
