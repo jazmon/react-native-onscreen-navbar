@@ -9,6 +9,11 @@ A React Native component to customize the Navigation Bar looks on Android.
 #### Install
 `npm install react-native-onscreen-navbar --save`
 
+For react-native  pre 0.46.0 use a older version
+
+`npm install react-native-onscreen-navbar@1.2.0 --save`
+
+
 #### Linking (automatically)
 `react-native link react-native-onscreen-navbar`
 
