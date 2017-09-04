@@ -7,15 +7,22 @@
     "example": "examples"
   },
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "lint": "./node_modules/.bin/eslint -c .eslintrc.js src",
-    "lint:fix": "./node_modules/.bin/eslint -c .eslintrc.js src --fix",
-    "flow": "./node_modules/.bin/flow"
+    "lint": "eslint -c .eslintrc.js src",
+    "lint:fix": "eslint -c .eslintrc.js src --fix",
+    "flow": "flow"
   },
   "repository": {
     "url": "git+https://github.com/Jazmon/react-native-onscreen-navbar.git",
     "type": "git"
   },
+  "files": [
+    "android",
+    "components",
+    "README.md",
+    "navbar-example.gif",
+    "index.js",
+    "LICENSE"
+  ],
   "keywords": [
     "react-native",
     "react-component",
