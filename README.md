@@ -1,4 +1,6 @@
 # react-native-onscreen-navbar
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/jazmon/react-native-onscreen-navbar.svg)](https://greenkeeper.io/)
 A React Native component to customize the Navigation Bar looks on Android.
 
 ## Preview
