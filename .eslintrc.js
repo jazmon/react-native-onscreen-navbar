@@ -42,6 +42,9 @@ module.exports = {
     'react-native',
   ],
   rules: {
+    // https://github.com/babel/babel-eslint/issues/487
+    'no-undef': 0,
+    'react/no-unused-prop-types': 0,
     'react-native/no-unused-styles': 1,
     'react-native/split-platform-components': 2,
     'jsx-quotes': ['error', 'prefer-double'],
