@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/jazmon/react-native-onscreen-navbar.svg?branch=master)](https://travis-ci.org/jazmon/react-native-onscreen-navbar)
 # react-native-onscreen-navbar
 A React Native component to customize the Navigation Bar looks on Android.
 
@@ -83,4 +84,4 @@ Inspired heavily by [StatusBar](https://github.com/facebook/react-native/blob/0.
 
 ## License
 
-(c) 2016 Atte Huhtakangas, [MIT license](/LICENSE).
+(c) 2017 Atte Huhtakangas, [MIT license](/LICENSE).
