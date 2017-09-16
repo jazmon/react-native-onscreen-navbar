@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/jazmon/react-native-onscreen-navbar.svg?branch=master)](https://travis-ci.org/jazmon/react-native-onscreen-navbar)
+[![GitHub stars](https://img.shields.io/github/stars/jazmon/react-native-onscreen-navbar.svg)](https://github.com/jazmon/react-native-onscreen-navbar/stargazers)
+[![Greenkeeper badge](https://badges.greenkeeper.io/jazmon/react-native-onscreen-navbar.svg)](https://greenkeeper.io/)
+[![npm version](https://badge.fury.io/js/react-native-onscreen-navbar.svg)](https://badge.fury.io/js/react-native-onscreen-navbar)
 # react-native-onscreen-navbar
 A React Native component to customize the Navigation Bar looks on Android.
 
@@ -8,11 +11,13 @@ A React Native component to customize the Navigation Bar looks on Android.
 ## Usage
 
 #### Install
-`npm install react-native-onscreen-navbar --save`
 
-For react-native  pre 0.46.0 use a older version
+#### React Native >=0.46.0
+`yarn add react-native-onscreen-navbar` or with npm `npm install react-native-onscreen-navbar --save`
 
-`npm install react-native-onscreen-navbar@1.2.0 --save`
+#### For react-native pre 0.46.0 use the 1.2 version
+
+`yarn add react-native-onscreen-navbar@1.2.0` or with npm`npm install react-native-onscreen-navbar@1.2.0 --save`
 
 
 #### Linking (automatically)
@@ -67,7 +72,7 @@ public class MainApplication extends Application implements ReactApplication {
 ```
 
 ## Example
-Check [index.android.js](https://github.com/Jazmon/react-native-onscreen-navbar/blob/master/examples/ExampleProject/index.android.js) in the examples folder
+Check [the example repo](https://github.com/jazmon/react-native-onscreen-navbar-example) which is featured in the gif.
 
 ## Properties
 
