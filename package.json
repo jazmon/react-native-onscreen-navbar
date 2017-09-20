@@ -57,7 +57,7 @@
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-react-native": "^2.0.0",
     "eslint-plugin-sort-class-members": "^1.1.1",
-    "flow-bin": "^0.49.1"
+    "flow-bin": "^0.55.0"
   },
   "dependencies": {
     "babel-eslint": "^7.2.3",
