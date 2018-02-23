@@ -4,21 +4,34 @@
   "description": "Onscreen navigation bar customization component for Android",
   "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint lib",
     "precommit": "lint-staged",
     "install-self-peers": "install-self-peers",
+    "lint": "eslint lib",
     "lint:fix": "eslint lib --fix",
     "flow": "flow"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "eslint --fix", "git add"],
-    "*.json": ["prettier --write", "git add"]
+    "*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "url": "git+https://github.com/Jazmon/react-native-onscreen-navbar.git",
     "type": "git"
   },
-  "files": ["android", "README.md", "navbar-example.gif", "lib", "LICENSE"],
+  "files": [
+    "android",
+    "README.md",
+    "navbar-example.gif",
+    "lib",
+    "LICENSE"
+  ],
   "keywords": [
     "react-native",
     "react-component",
@@ -44,26 +57,24 @@
   },
   "homepage": "https://github.com/Jazmon/react-native-onscreen-navbar#readme",
   "peerDependencies": {
-    "react": ">=16.0.0-alpha.12",
-    "react-native": ">=0.47.2"
+    "react": "^16.2.0",
+    "react-native": "^0.53.3"
   },
   "devDependencies": {
     "@team-griffin/install-self-peers": "^1.1.1",
-    "eslint": "^4.3.0",
-    "eslint-config-airbnb": "^15.1.0",
-    "eslint-plugin-flowtype": "^2.25.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0",
-    "eslint-plugin-react-native": "^2.0.0",
-    "eslint-plugin-sort-class-members": "^1.1.1",
-    "flow-bin": "^0.49.1"
-  },
-  "dependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint-config-prettier": "^2.4.0",
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "eslint-plugin-react-native": "^3.2.1",
+    "flow-bin": "^0.66.0",
     "husky": "^0.14.3",
-    "lint-staged": "^6.0.0",
-    "prettier": "^1.6.1"
-  }
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.10.2"
+  },
+  "dependencies": {}
 }

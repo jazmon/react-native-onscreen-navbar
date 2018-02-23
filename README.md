@@ -2,30 +2,34 @@
 [![GitHub stars](https://img.shields.io/github/stars/jazmon/react-native-onscreen-navbar.svg)](https://github.com/jazmon/react-native-onscreen-navbar/stargazers)
 [![Greenkeeper badge](https://badges.greenkeeper.io/jazmon/react-native-onscreen-navbar.svg)](https://greenkeeper.io/)
 [![npm version](https://badge.fury.io/js/react-native-onscreen-navbar.svg)](https://badge.fury.io/js/react-native-onscreen-navbar)
+
 # react-native-onscreen-navbar
+
 A React Native component to customize the Navigation Bar looks on Android.
 
 ## Preview
-![](http://i.imgur.com/g95jWQ5.gif)
+
+![example usage gif](http://i.imgur.com/g95jWQ5.gif)
 
 ## Usage
 
-#### Install
+### Install
 
-#### React Native >=0.46.0
+### React Native >=0.46.0
+
 `yarn add react-native-onscreen-navbar` or with npm `npm install react-native-onscreen-navbar --save`
 
 #### For react-native pre 0.46.0 use the 1.2 version
 
 `yarn add react-native-onscreen-navbar@1.2.0` or with npm`npm install react-native-onscreen-navbar@1.2.0 --save`
 
+### Linking (automatically)
 
-#### Linking (automatically)
 `react-native link react-native-onscreen-navbar`
 
-#### Linking (manually)
+### Linking (manually)
 
-##### In `android/app/build.gradle`, add the lines
+#### In `android/app/build.gradle`, add the lines
 
 ```diff
 dependencies {
@@ -36,14 +40,16 @@ dependencies {
 }
 ```
 
-##### In `android/settings.gradle`, add the lines
+#### In `android/settings.gradle`, add the lines
+
 ```diff
 include ':app'
 + include ':react-native-onscreen-navbar'
 + project(':react-native-onscreen-navbar').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-onscreen-navbar/android')
 ```
 
-##### In `android/app/src/main/java/com/example/MainApplication.java`, add the `NavigationBarPackage` dependency.
+#### In `android/app/src/main/java/com/example/MainApplication.java`, add the `NavigationBarPackage` dependency.
+
 ```diff
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
@@ -56,7 +62,7 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
     ...
-    
+
     /**
      * A list of packages used by the app. If the app uses additional views
      * or modules besides the default ones, add more packages here.
@@ -72,6 +78,7 @@ public class MainApplication extends Application implements ReactApplication {
 ```
 
 ## Example
+
 Check [the example repo](https://github.com/jazmon/react-native-onscreen-navbar-example) which is featured in the gif.
 
 ## Properties
@@ -82,10 +89,9 @@ Check [the example repo](https://github.com/jazmon/react-native-onscreen-navbar-
 | backgroundColor | #000000 | `string` | BackgroundColor of the Navigation Bar  |
 | translucent | `false` | `boolean` | Is the Navigation Bar translucent or not |
 
-
 ## Acknowledgements
-Inspired heavily by [StatusBar](https://github.com/facebook/react-native/blob/0.27-stable/Libraries/Components/StatusBar/StatusBar.js) in the React Native main repo.
 
+Inspired heavily by [StatusBar](https://github.com/facebook/react-native/blob/0.27-stable/Libraries/Components/StatusBar/StatusBar.js) in the React Native main repo.
 
 ## License
 
