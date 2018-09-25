@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@team-griffin/install-self-peers": "^1.1.1",
-    "babel-eslint": "^8.2.2",
+    "babel-eslint": "^10.0.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
